@@ -4,9 +4,6 @@ This repository contains solutions and analyses for the five assigned exercises 
 
 ---
 
-##  Repository Structure:
-
----
 
 ## Exercise 1 – Spectral Content Estimation  
 **Topic:** Pisarenko’s method for estimating sinusoidal frequencies and noise variance by eigen‑analysis of the autocorrelation matrix.  
