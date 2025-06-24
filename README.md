@@ -11,59 +11,119 @@ This repository contains solutions and analyses for the five assigned exercises 
 **Key Steps & Analysis:**  
 
 ### 1. First‑Order Case
+
 1. **Signal Model**  
-   $$X(n) = A_1\,e^{j\omega_1 n} + W(n),\quad n=0,\dots,M-1.$$
+   $$  
+   X(n) = A_1\,e^{j\omega_1 n} + W(n), \quad n = 0,1,\dots,M-1.  
+   $$
+
 2. **Autocorrelation Sequence**  
-   $$r_{XX}(k) \;=\; E\{X(n+k)X^*(n)\}
-   = |A_1|^2\,e^{j\omega_1 k} \;+\; \sigma_W^2\,\delta(k).$$
+   $$  
+   r_{XX}(k)
+   = E\{\,X(n+k)\,X^*(n)\}
+   = |A_1|^2\,e^{j\omega_1 k} + \sigma_W^2\,\delta(k).
+   $$
+
 3. **Autocorrelation Matrix**  
-   $$R_{XX}
-   = \bigl[r_{XX}(i-j)\bigr]_{i,j=0}^{M-1}
-   = |A_1|^2\,e\,e^H \;+\; \sigma_W^2\,I_M,$$  
+   $$  
+   R_{XX}
+   = \bigl[\,r_{XX}(i-j)\bigr]_{i,j=0}^{M-1}
+   = |A_1|^2\,\mathbf{e}\,\mathbf{e}^H \;+\; \sigma_W^2\,I_M,
+   $$  
    where  
-   $$e = \begin{bmatrix}1 & e^{-j\omega_1} & \dots & e^{-j\omega_1(M-1)}\end{bmatrix}^T.$$
+   $$  
+   \mathbf{e}
+   = \begin{bmatrix}
+     1 \\[6pt]
+     e^{-j\omega_1} \\[3pt]
+     \vdots \\[3pt]
+     e^{-j\omega_1\,(M-1)}
+   \end{bmatrix}.
+   $$
+
 4. **Eigenstructure**  
    - **Largest eigenvalue:**  
-     $$\lambda_1 = M\,|A_1|^2 + \sigma_W^2,\quad v_1 \propto e.$$  
-   - **Remaining** \(M-1\) **eigenvalues:**  
-     $$\lambda_2 = \cdots = \lambda_M = \sigma_W^2.$$
+     $$  
+     \lambda_1 = M\,|A_1|^2 + \sigma_W^2,\quad
+     v_1 \propto \mathbf{e}.
+     $$  
+   - **Remaining \(M-1\) eigenvalues:**  
+     $$  
+     \lambda_2 = \lambda_3 = \cdots = \lambda_M = \sigma_W^2.
+     $$
+
 5. **Parameter Estimates**  
    - **Noise variance:**  
-     $$\hat\sigma_W^2 = \lambda_M.$$  
+     $$  
+     \displaystyle \hat\sigma_W^2 = \lambda_M.
+     $$  
    - **Signal power:**  
-     $$|A_1|^2 = \frac{\lambda_1 - \lambda_M}{M}.$$  
+     $$  
+     \displaystyle |A_1|^2 = \frac{\lambda_1 - \lambda_M}{M}.
+     $$  
    - **Frequency:**  
-     $$\omega_1 = -\arg\bigl(v_1[2]\bigr).$$
+     Recover \(\omega_1\) from the phase of \(v_1\), e.g.  
+     $$  
+     \omega_1 = -\arg\bigl(v_1[2]\bigr).
+     $$
 
 ---
 
 ### 2. \(P\)‑th Order Case
+
 1. **Signal Model**  
-   $$X(n) = \sum_{i=1}^P A_i\,e^{j\omega_i n} + W(n).$$
+   $$  
+   X(n) = \sum_{i=1}^{P} A_i\,e^{j\omega_i n} + W(n).
+   $$
+
 2. **Autocorrelation Sequence**  
-   $$r_{XX}(k)
-   = \sum_{i=1}^P |A_i|^2\,e^{j\omega_i k}
-   + \sigma_W^2\,\delta(k).$$
+   $$  
+   r_{XX}(k)
+   = \sum_{i=1}^{P} |A_i|^2\,e^{j\omega_i k}
+     + \sigma_W^2\,\delta(k).
+   $$
+
 3. **Autocorrelation Matrix**  
-   $$R_{XX}
-   = \sum_{i=1}^P |A_i|^2\,e_i\,e_i^H
-   \;+\; \sigma_W^2\,I_M,$$  
-   with steering vectors  
-   $$e_i = \begin{bmatrix}1 & e^{-j\omega_i} & \dots & e^{-j\omega_i(M-1)}\end{bmatrix}^T.$$
+   $$  
+   R_{XX}
+   = \sum_{i=1}^{P} |A_i|^2\,\mathbf{e}_i\,\mathbf{e}_i^H
+     + \sigma_W^2\,I_M,
+   $$  
+   where each steering vector is  
+   $$  
+   \mathbf{e}_i
+   = \begin{bmatrix}
+     1 \\[6pt]
+     e^{-j\omega_i} \\[3pt]
+     \vdots \\[3pt]
+     e^{-j\omega_i\,(M-1)}
+   \end{bmatrix}.
+   $$
+
 4. **Eigenstructure**  
    - **Top \(P\) eigenvalues:**  
-     $$\lambda_i = M\,|A_i|^2 + \sigma_W^2,\quad i=1,\dots,P.$$  
-   - **Remaining** \(M-P\) **eigenvalues:**  
-     $$\lambda_{P+1} = \cdots = \lambda_M = \sigma_W^2.$$
+     $$  
+     \lambda_i = M\,|A_i|^2 + \sigma_W^2,\quad i=1,\dots,P.
+     $$  
+   - **Remaining \(M-P\) eigenvalues:**  
+     $$  
+     \lambda_{P+1} = \lambda_{P+2} = \cdots = \lambda_M = \sigma_W^2.
+     $$
+
 5. **Parameter Estimates**  
    - **Noise variance:**  
-     $$\hat\sigma_W^2 = \lambda_M.$$  
-   - **Powers:**  
-     $$|A_i|^2 = \frac{\lambda_i - \lambda_M}{M},\quad i=1,\dots,P.$$  
+     $$  
+     \hat\sigma_W^2 = \lambda_M.
+     $$  
+   - **Signal powers:**  
+     $$  
+     |A_i|^2 = \frac{\lambda_i - \lambda_M}{M},\quad i=1,\dots,P.
+     $$  
    - **Frequencies:**  
      Recover each \(\omega_i\) from the phase progression of the corresponding eigenvector \(v_i\).
 
 ---
+
 
 
 ## Exercise 2 – Low‑Rank Modeling & Eigenfilters  
