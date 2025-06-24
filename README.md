@@ -11,23 +11,31 @@ This repository contains solutions and analyses for the five assigned exercises 
 ## Exercise 1 – Spectral Content Estimation  
 **Topic:** Pisarenko’s method for estimating sinusoidal frequencies and noise variance by eigen‑analysis of the autocorrelation matrix.  
 
-**Key Steps & Analysis:**  
+**Key Steps & Analysis:**
+
 1. **Theory Recap**  
-   - Model signal as \(X(n)=\sum_{i=1}^P A_i e^{j\omega_i n}+W(n)\).  
-   - Form autocorrelation matrix \(R_{XX}\) and observe that the signal subspace is spanned by the dominant eigenvector, while the noise subspace corresponds to repeated smallest eigenvalues.  
+   - Model the signal as  
+     $$X(n) = \sum_{i=1}^{P} A_i e^{j \omega_i n} + W(n).$$  
+   - Form the autocorrelation matrix  
+     $$R_{XX} = E\bigl[X\,X^H\bigr],$$  
+     and observe that the “signal subspace” is spanned by the eigenvectors corresponding to the $P$ largest eigenvalues, while the “noise subspace” corresponds to the $(M − P)$ smallest, equal eigenvalues.
 
 2. **Algorithm (Pisarenko)**  
-   - Compute eigenvalues \(\lambda_1\ge\lambda_2=\cdots=\lambda_M\).  
-   - Estimate noise variance \(\hat\sigma_W^2=\lambda_{\min}\).  
-   - Estimate amplitude squared \(|A_1|^2=(\lambda_1-\lambda_{\min})/M\).  
-   - Use the principal eigenvector’s phase difference to recover \(\omega_1\).  
+   - Compute eigenvalues  
+     $$\lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_M.$$  
+   - Estimate the noise variance  
+     $$\hat\sigma_W^2 = \lambda_{\min} = \lambda_M.$$  
+   - The signal amplitudes follow from  
+     $$|A_i|^2 = \frac{\lambda_i - \lambda_M}{M},\quad i=1,\dots,P.$$  
+   - Recover each frequency $\omega_i$ from the phase progression of the corresponding principal eigenvector.
 
 3. **Implementation & Results**  
-   - **Part 5:** Closed‑form example with 2×2 matrix.  
-   - **Part 7:** Monte Carlo simulation (N=100 realizations, M=50), estimate mean, autocorrelation, eigen‑structure; histogram of noise eigenvalues; moment analysis.  
-   - **Discussion:** Convergence of sample estimates vs. theoretical values; effect of M and N on variance of estimates; bias/variance trade‑off.  
+   - **Part 5:** Closed‑form example with a $2\times2$ autocorrelation matrix.  
+   - **Part 7:** Monte Carlo simulation ($N=100$ realizations, $M=50$), estimate sample autocorrelation, compute eigenstructure, plot histogram of noise‑subspace eigenvalues, compare empirical moments to theory.  
+   - **Discussion:** Convergence of sample estimates to their theoretical values, effect of $M$ and $N$ on estimator variance, and bias‑variance trade‑offs in frequency estimation.
 
 ---
+
 
 ## Exercise 2 – Low‑Rank Modeling & Eigenfilters  
 **Topic:** Low‑rank approximation of multidimensional signals via eigenfilter decomposition (Karhunen–Loève, PCA/SVD).  
