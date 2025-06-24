@@ -23,7 +23,7 @@ This repository contains solutions and analyses for the five assigned exercises 
      $$\hat\sigma_W^2 = \lambda_{\min} = \lambda_M\,. $$  
    - For each sinusoid, estimate its power  
      $$|A_i|^2 = \frac{\lambda_i - \lambda_M}{M},\quad i=1,\dots,P\,. $$  
-   - Recover each frequency \(\omega_i\) from the phase progression of the corresponding principal eigenvector.
+   - Recover each frequency  from the phase progression of the corresponding principal eigenvector.
 
 3. **Implementation & Results**  
    - **Part 5:** Closed‑form example with a \(2\times2\) autocorrelation matrix.  
@@ -101,7 +101,7 @@ This repository contains solutions and analyses for the five assigned exercises 
 
 ---
 
-## Exercise 5 – ADSP 21: SVD & PCA on Video Data  
+## Exercise 5 –  SVD & PCA on Video Data  
 **Topic:** Singular Value Decomposition (SVD) and Principal Component Analysis (PCA) applied to video frames.  
 
 **Key Steps & Analysis:**  
@@ -128,14 +128,6 @@ This repository contains solutions and analyses for the five assigned exercises 
 
 ---
 
-### How to Reproduce
-
-1. **Prerequisites:**  
-   - MATLAB R2021a or later (or Python 3.8+ with NumPy/SciPy).  
-2. **Run all examples:**  
-   ```sh
-   cd Exercise-*
-   matlab -batch "run_all"    # or python run_all.py
 
 
 
