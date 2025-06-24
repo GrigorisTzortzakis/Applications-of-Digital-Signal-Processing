@@ -20,9 +20,7 @@ This repository contains solutions and analyses for the five assigned exercises 
    $$R_{XX}
    = \bigl[r_{XX}(i-j)\bigr]_{i,j=0}^{M-1}
    = |A_1|^2\,e\,e^H \;+\; \sigma_W^2\,I_M,$$  
-   where  
-   $$e = \begin{bmatrix}1 & e^{-j\omega_1} & \dots & e^{-j\omega_1(M-1)}\end{bmatrix}^T.$$
-4. **Eigenstructure**  
+  4. **Eigenstructure**  
    - **Largest eigenvalue:**  
      $$\lambda_1 = M\,|A_1|^2 + \sigma_W^2,\quad v_1 \propto e.$$  
    - **Remaining** \(M-1\) **eigenvalues:**  
