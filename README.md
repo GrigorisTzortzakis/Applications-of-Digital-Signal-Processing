@@ -11,48 +11,49 @@ This repository contains solutions and analyses for the five assigned exercises 
 ## Exercise 1 – Spectral Content Estimation  
 **Topic:** Pisarenko’s method for estimating sinusoidal frequencies and noise variance by eigen‑analysis of the autocorrelation matrix.  
 
-**Key Steps & Analysis:**
-
+**Key Steps & Analysis:**  
 1. **Theory Recap**  
    - Model the signal as  
-     $$X(n) = \sum_{i=1}^{P} A_i e^{j \omega_i n} + W(n).$$  
+     $$X(n) = \sum_{i=1}^{P} A_i\,e^{j\omega_i n} + W(n)\,. $$  
    - Form the autocorrelation matrix  
-     $$R_{XX} = E\bigl[X\,X^H\bigr],$$  
-     and observe that the “signal subspace” is spanned by the eigenvectors corresponding to the $P$ largest eigenvalues, while the “noise subspace” corresponds to the $(M − P)$ smallest, equal eigenvalues.
+     $$R_{XX} = E\bigl[X(n)\,X(n)^H\bigr]$$  
+     and observe that the signal subspace is spanned by the eigenvectors corresponding to the largest \(P\) eigenvalues, while the noise subspace corresponds to the remaining equal, smallest eigenvalues.
 
 2. **Algorithm (Pisarenko)**  
    - Compute eigenvalues  
-     $$\lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_M.$$  
-   - Estimate the noise variance  
-     $$\hat\sigma_W^2 = \lambda_{\min} = \lambda_M.$$  
-   - The signal amplitudes follow from  
-     $$|A_i|^2 = \frac{\lambda_i - \lambda_M}{M},\quad i=1,\dots,P.$$  
-   - Recover each frequency $\omega_i$ from the phase progression of the corresponding principal eigenvector.
+     $$\lambda_1 \ge \lambda_2 \ge \cdots \ge \lambda_M\,. $$  
+   - Estimate noise variance  
+     $$\hat\sigma_W^2 = \lambda_{\min} = \lambda_M\,. $$  
+   - For each sinusoid, estimate its power  
+     $$|A_i|^2 = \frac{\lambda_i - \lambda_M}{M},\quad i=1,\dots,P\,. $$  
+   - Recover each frequency \(\omega_i\) from the phase progression of the corresponding principal eigenvector.
 
 3. **Implementation & Results**  
-   - **Part 5:** Closed‑form example with a $2\times2$ autocorrelation matrix.  
-   - **Part 7:** Monte Carlo simulation ($N=100$ realizations, $M=50$), estimate sample autocorrelation, compute eigenstructure, plot histogram of noise‑subspace eigenvalues, compare empirical moments to theory.  
-   - **Discussion:** Convergence of sample estimates to their theoretical values, effect of $M$ and $N$ on estimator variance, and bias‑variance trade‑offs in frequency estimation.
+   - **Part 5:** Closed‑form example with a \(2\times2\) autocorrelation matrix.  
+   - **Part 7:** Monte Carlo simulation (\(N=100\) realizations, \(M=50\)); estimate sample autocorrelation, compute eigenstructure, plot histogram of noise‑subspace eigenvalues, compare empirical moments to theory.  
+   - **Discussion:** Convergence of sample estimates to their theoretical values; effect of \(M\) and \(N\) on estimator variance; bias‑variance trade‑offs in frequency estimation.
 
 ---
-
 
 ## Exercise 2 – Low‑Rank Modeling & Eigenfilters  
 **Topic:** Low‑rank approximation of multidimensional signals via eigenfilter decomposition (Karhunen–Loève, PCA/SVD).  
 
 **Key Steps & Analysis:**  
 1. **Modeling**  
-   - Represent vector random process \(U\) with covariance \(C_{UU}=Q\Lambda Q^T\).  
-   - Transmit only the top \(P\) principal components for compression.  
+   - Represent a vector random process \(U\) with covariance  
+     $$C_{UU} = Q\,\Lambda\,Q^T\,. $$  
+   - Transmit only the top \(P\) principal components for compression.
 
 2. **Noiseless vs. Noisy Channel**  
-   - Derive reconstruction MSE in noise‑free case: \(\sum_{m=P+1}^M\lambda_m\).  
-   - In AWGN channel, show MSE\(\;=\sum_{m=P+1}^M\lambda_m + P\sigma_W^2\).  
+   - In the noise‑free case, reconstruction MSE is  
+     $$\text{MSE} = \sum_{m=P+1}^{M} \lambda_m\,. $$  
+   - Over an AWGN channel, show  
+     $$\text{MSE} = \sum_{m=P+1}^{M} \lambda_m \;+\; P\,\sigma_W^2\,. $$
 
 3. **Simulation**  
-   - Load provided `U.mat` (100 realizations, M=10 000).  
-   - Estimate \(C_{UU}\); perform `eig` or `svd`; verify theoretical error curves vs. P.  
-   - Plot relative error vs. P for various channel SNRs; discuss regimes where low‑rank transmission helps.  
+   - Load `U.mat` (100 realizations, \(M=10\,000\)).  
+   - Estimate \(C_{UU}\); perform `eig` or `svd`; verify theoretical error curves vs. \(P\).  
+   - Plot relative error vs. \(P\) for various channel SNRs; discuss regimes where low‑rank transmission is beneficial.
 
 ---
 
@@ -61,18 +62,20 @@ This repository contains solutions and analyses for the five assigned exercises 
 
 **Key Steps & Analysis:**  
 1. **KSVD & GenOMP**  
-   - **P1 (Sparse Coding):** Solve \(\min_X\|Y-DX\|_F^2\) s.t. \(\|x_n\|_0\le T\) via greedy atom selection (OMP).  
-   - **P2 (Dictionary Update):** Update each atom by SVD of residuals after fixing sparsity pattern.  
-   - Iterate until convergence or fixed epochs.  
+   - **Sparse Coding (P1):**  
+     $$\min_X \|Y - D\,X\|_F^2 \quad\text{s.t.}\quad \|x_n\|_0 \le T,$$  
+     solved via greedy atom selection (OMP).  
+   - **Dictionary Update (P2):**  
+     Update each atom by computing the SVD of the residual matrix restricted to the support of that atom.  
 
 2. **Applications**  
-   - **Denoising:** Represent noisy patches with learned dictionary → reconstruct clean image.  
-   - **Inpainting:** Fill missing pixels by sparse approximation on known support.  
+   - **Denoising:** Represent noisy image patches with the learned dictionary and reconstruct the denoised image.  
+   - **Inpainting:** Fill in missing pixels by sparse approximation on the known support.
 
 3. **Implementation & Results**  
    - MATLAB (and Python bonus) code for both tasks.  
-   - Show side‑by‑side plots of original / degraded / recovered images.  
-   - Tabulate MSE vs. SNR for denoising and inpainting scenarios; interpret how dictionary quality and sparsity level affect performance.  
+   - Side‑by‑side plots of original, degraded, and recovered images.  
+   - Table of MSE vs. SNR for denoising and inpainting; discussion of how dictionary quality and sparsity level affect performance.
 
 ---
 
@@ -81,19 +84,23 @@ This repository contains solutions and analyses for the five assigned exercises 
 
 **Key Steps & Analysis:**  
 1. **PCA (Eigenfaces):**  
-   - Stack vectorized face images; compute mean face; project onto top \(k\) eigenvectors of covariance.  
+   - Vectorize face images into columns; compute the mean face \(\mu\); form covariance  
+     $$C = \frac{1}{N}\sum_{n=1}^N (x_n - \mu)(x_n - \mu)^T\,, $$  
+     project onto the top \(k\) eigenvectors.
 
 2. **LDA (Fisherfaces):**  
-   - Compute within‑class (\(S_W\)) and between‑class (\(S_B\)) scatter matrices.  
-   - Solve \(\max_w \frac{w^TS_Bw}{w^TS_Ww}\); select discriminant directions.  
+   - Compute within‑class scatter \(S_W\) and between‑class scatter \(S_B\).  
+   - Solve  
+     $$\max_w \frac{w^T S_B w}{w^T S_W w}$$  
+     to find the most discriminant directions.
 
 3. **K‑Means Clustering:**  
-   - Partition projected features into \(K\) clusters by minimizing within‑cluster variance; iterate until convergence.  
+   - Cluster the projected feature vectors into \(K\) groups by minimizing within‑cluster variance.
 
 4. **Results & Discussion:**  
-   - Show reconstruction error vs. retained dimensions for PCA.  
-   - Classification accuracy for PCA vs. LDA.  
-   - Effect of cluster count on unsupervised grouping of faces; discuss cluster purity.  
+   - Reconstruction error vs. retained PCA dimensions.  
+   - Classification accuracy: PCA vs. LDA.  
+   - Effect of \(K\) on unsupervised grouping; cluster purity analysis.
 
 ---
 
@@ -102,25 +109,36 @@ This repository contains solutions and analyses for the five assigned exercises 
 
 **Key Steps & Analysis:**  
 1. **Data Preparation:**  
-   - Stack each video frame as a column of \(X\in\mathbb{R}^{T\times N}\).  
+   - Stack each video frame as a column of  
+     $$X \in \mathbb{R}^{T \times N}\,. $$
 
 2. **SVD:**  
-   - Compute \(X^T=U\Sigma V^T\); interpret singular values as energy in principal modes.  
-   - Truncate to top 10 modes; reconstruct approximations and measure reconstruction error.  
+   - Compute  
+     $$X = U\,\Sigma\,V^T\,, $$  
+     interpret singular values \(\sigma_i\) as the energy in each principal mode.  
+   - Truncate to the top 10 modes; reconstruct and measure the reconstruction error.
 
 3. **PCA on Covariance:**  
-   - Compute covariance of test set \(X_oX_o^T\); compare PCA eigenvalues/truncation vs. SVD approach.  
+   - Compute the covariance \(X\,X^T\); compare its eigenvalues and truncation performance to the SVD approach.
 
 4. **Feature Extraction & Clustering:**  
-   - Project frames onto top 3 principal components; visualize clustering in 3D.  
-   - Show scree plots; discuss percent variance explained.  
+   - Project frames onto the top 3 principal components; visualize clustering in 3D.  
+   - Present scree plot of variance explained.
 
 5. **Discussion:**  
-   - Trade‑off between compression (mode count) and fidelity.  
-   - Applicability to background subtraction and dynamic scene modeling.  
+   - Trade‑off between compression (number of modes) and fidelity.  
+   - Applications to background subtraction and dynamic scene modelling.
 
 ---
 
+### How to Reproduce
+
+1. **Prerequisites:**  
+   - MATLAB R2021a or later (or Python 3.8+ with NumPy/SciPy).  
+2. **Run all examples:**  
+   ```sh
+   cd Exercise-*
+   matlab -batch "run_all"    # or python run_all.py
 
 
 
