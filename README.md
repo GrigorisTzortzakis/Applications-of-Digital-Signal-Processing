@@ -6,31 +6,65 @@ This repository contains solutions and analyses for the five assigned exercises 
 
 
 ## Exercise 1 – Spectral Content Estimation  
-**Topic:** Pisarenko’s method for estimating sinusoidal frequencies and noise variance by eigen‑analysis of the autocorrelation matrix.  
+**Topic:** Spectral Content Estimation
 
 **Key Steps & Analysis:**  
-1. **Theory Recap**  
-   - Model the signal as  
-     $$X(n) = \sum_{i=1}^{P} A_i\,e^{j\omega_i n} + W(n)\,. $$  
-   - Form the autocorrelation matrix  
-     $$R_{XX} = E\bigl[X(n)\,X(n)^H\bigr]$$  
-     and observe that the signal subspace is spanned by the eigenvectors corresponding to the largest \(P\) eigenvalues, while the noise subspace corresponds to the remaining equal, smallest eigenvalues.
 
-2. **Algorithm (Pisarenko)**  
-   - Compute eigenvalues  
-     $$\lambda_1 \ge \lambda_2 \ge \cdots \ge \lambda_M\,. $$  
-   - Estimate noise variance  
-     $$\hat\sigma_W^2 = \lambda_{\min} = \lambda_M\,. $$  
-   - For each sinusoid, estimate its power  
-     $$|A_i|^2 = \frac{\lambda_i - \lambda_M}{M},\quad i=1,\dots,P\,. $$  
-   - Recover each frequency  from the phase progression of the corresponding principal eigenvector.
-
-3. **Implementation & Results**  
-   - **Part 5:** Closed‑form example with a \(2\times2\) autocorrelation matrix.  
-   - **Part 7:** Monte Carlo simulation (\(N=100\) realizations, \(M=50\)); estimate sample autocorrelation, compute eigenstructure, plot histogram of noise‑subspace eigenvalues, compare empirical moments to theory.  
-   - **Discussion:** Convergence of sample estimates to their theoretical values; effect of \(M\) and \(N\) on estimator variance; bias‑variance trade‑offs in frequency estimation.
+### 1. First‑Order Case
+1. **Signal Model**  
+   $$X(n) = A_1\,e^{j\omega_1 n} + W(n),\quad n=0,\dots,M-1.$$
+2. **Autocorrelation Sequence**  
+   $$r_{XX}(k) \;=\; E\{X(n+k)X^*(n)\}
+   = |A_1|^2\,e^{j\omega_1 k} \;+\; \sigma_W^2\,\delta(k).$$
+3. **Autocorrelation Matrix**  
+   $$R_{XX}
+   = \bigl[r_{XX}(i-j)\bigr]_{i,j=0}^{M-1}
+   = |A_1|^2\,e\,e^H \;+\; \sigma_W^2\,I_M,$$  
+   where  
+   $$e = \begin{bmatrix}1 & e^{-j\omega_1} & \dots & e^{-j\omega_1(M-1)}\end{bmatrix}^T.$$
+4. **Eigenstructure**  
+   - **Largest eigenvalue:**  
+     $$\lambda_1 = M\,|A_1|^2 + \sigma_W^2,\quad v_1 \propto e.$$  
+   - **Remaining** \(M-1\) **eigenvalues:**  
+     $$\lambda_2 = \cdots = \lambda_M = \sigma_W^2.$$
+5. **Parameter Estimates**  
+   - **Noise variance:**  
+     $$\hat\sigma_W^2 = \lambda_M.$$  
+   - **Signal power:**  
+     $$|A_1|^2 = \frac{\lambda_1 - \lambda_M}{M}.$$  
+   - **Frequency:**  
+     $$\omega_1 = -\arg\bigl(v_1[2]\bigr).$$
 
 ---
+
+### 2. \(P\)‑th Order Case
+1. **Signal Model**  
+   $$X(n) = \sum_{i=1}^P A_i\,e^{j\omega_i n} + W(n).$$
+2. **Autocorrelation Sequence**  
+   $$r_{XX}(k)
+   = \sum_{i=1}^P |A_i|^2\,e^{j\omega_i k}
+   + \sigma_W^2\,\delta(k).$$
+3. **Autocorrelation Matrix**  
+   $$R_{XX}
+   = \sum_{i=1}^P |A_i|^2\,e_i\,e_i^H
+   \;+\; \sigma_W^2\,I_M,$$  
+   with steering vectors  
+   $$e_i = \begin{bmatrix}1 & e^{-j\omega_i} & \dots & e^{-j\omega_i(M-1)}\end{bmatrix}^T.$$
+4. **Eigenstructure**  
+   - **Top \(P\) eigenvalues:**  
+     $$\lambda_i = M\,|A_i|^2 + \sigma_W^2,\quad i=1,\dots,P.$$  
+   - **Remaining** \(M-P\) **eigenvalues:**  
+     $$\lambda_{P+1} = \cdots = \lambda_M = \sigma_W^2.$$
+5. **Parameter Estimates**  
+   - **Noise variance:**  
+     $$\hat\sigma_W^2 = \lambda_M.$$  
+   - **Powers:**  
+     $$|A_i|^2 = \frac{\lambda_i - \lambda_M}{M},\quad i=1,\dots,P.$$  
+   - **Frequencies:**  
+     Recover each \(\omega_i\) from the phase progression of the corresponding eigenvector \(v_i\).
+
+---
+
 
 ## Exercise 2 – Low‑Rank Modeling & Eigenfilters  
 **Topic:** Low‑rank approximation of multidimensional signals via eigenfilter decomposition (Karhunen–Loève, PCA/SVD).  
