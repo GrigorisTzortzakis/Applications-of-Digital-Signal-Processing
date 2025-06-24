@@ -39,15 +39,10 @@ This repository contains solutions and analyses for the five assigned exercises 
 1. **Signal Model**  
    $$X(n) = \sum_{i=1}^P A_i\,e^{j\omega_i n} + W(n).$$
 2. **Autocorrelation Sequence**  
-   $$r_{XX}(k)
-   = \sum_{i=1}^P |A_i|^2\,e^{j\omega_i k}
-   + \sigma_W^2\,\delta(k).$$
 3. **Autocorrelation Matrix**  
    $$R_{XX}
    = \sum_{i=1}^P |A_i|^2\,e_i\,e_i^H
    \;+\; \sigma_W^2\,I_M,$$  
-   with steering vectors  
-   $$e_i = \begin{bmatrix}1 & e^{-j\omega_i} & \dots & e^{-j\omega_i(M-1)}\end{bmatrix}^T.$$
 4. **Eigenstructure**  
    - **Top \(P\) eigenvalues:**  
      $$\lambda_i = M\,|A_i|^2 + \sigma_W^2,\quad i=1,\dots,P.$$  
@@ -58,8 +53,7 @@ This repository contains solutions and analyses for the five assigned exercises 
      $$\hat\sigma_W^2 = \lambda_M.$$  
    - **Powers:**  
      $$|A_i|^2 = \frac{\lambda_i - \lambda_M}{M},\quad i=1,\dots,P.$$  
-   - **Frequencies:**  
-     Recover each \(\omega_i\) from the phase progression of the corresponding eigenvector \(v_i\).
+
 
 ---
 
